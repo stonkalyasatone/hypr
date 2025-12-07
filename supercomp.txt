@@ -1,0 +1,55 @@
+push "SHCN calculator";invoke print
+var cand
+var fc
+var cf
+var mf
+var maxfact
+var currfact
+#var af
+var temp
+jsr @main
+jmp @halt
+
+@clear
+mf=1 #Mult. Factor
+#af=1 #Adding Factor
+rtn
+
+#I call this the AM divisor counting algorithm
+@count
+pop temp
+jsr @clear
+fc=1 #Factor Count
+cf=2
+@factor_loop
+if temp%cf!=0 then jmp @nondiv
+temp=temp//cf
+mf++
+#af*=cf
+#push "divided by "+cf;#invoke print
+jmp @factor_loop
+@nondiv
+#push "number has "+mf+" of "+cf;#invoke print
+fc*=mf
+jsr @clear
+cf++
+if temp>1 then jmp @factor_loop
+push fc
+rtn
+
+@main
+cand=1
+maxfact=-1
+@main_loop
+cand++
+push cand
+jsr @count
+pop currfact
+if currfact<=maxfact then jmp @main_loop
+push "New Highly Composite Number Found! It is "+cand+" with "+currfact+" factors."
+invoke print
+maxfact=currfact
+if cand>=10000 then rtn
+jmp @main_loop
+
+@halt

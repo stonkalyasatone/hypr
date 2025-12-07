@@ -1,0 +1,42 @@
+push "Collatz's Sequence, now with Functions";invoke print
+var start
+var maxlen
+var currlen
+maxlen=-1
+start=0
+@loop
+start++
+if start>10000 then jmp @endl
+#currently ifs only support thens with one expression
+#control flow is actually really hard to implement
+push start; jsr @collatz
+pop currlen
+if currlen<=maxlen then jmp @loop
+push "New longest Collatz Sequence Found! Starting at "+start+" with length "+currlen;invoke print
+maxlen=currlen
+#arguments first in last out, then jsr to function
+jmp @loop
+
+@collatz
+var t
+var l
+pop t
+l=1
+#I hope that scope vars can be handled on the stack as well,
+#making the stack a hybrid varstack, argstack, retstack, and coprocessor stack
+@loop_collatz
+if t%2==0 then jmp @div_collatz
+t=3*t+1
+jmp @endc_collatz
+@div_collatz
+t=t//2
+@endc_collatz
+l++
+if t==1 then jmp @endl_collatz
+jmp @loop_collatz
+@endl_collatz
+push l
+rtn
+
+@endl
+
