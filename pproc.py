@@ -22,13 +22,13 @@ def post_tokenisation(code):
           break
     idx+=1
   return temp
-def get_vars(code):
-  variables=set()
-  for idx in range(len(code)):
-    if(code[idx].ttype!="word"):continue
-    if(code[idx].tvalue!="var"):continue
-    variables|={code[idx+1].tvalue}
-  return list(variables)
+#def get_vars(code):
+#  variables=set()
+#  for idx in range(len(code)):
+#    if(code[idx].ttype!="word"):continue
+#    if(code[idx].tvalue!="var"):continue
+#    variables|={code[idx+1].tvalue}
+#  return list(variables)
 #class Bracket(Token):
 #  dest=None
 #  where=None

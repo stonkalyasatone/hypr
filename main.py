@@ -25,9 +25,9 @@ if/then/else
 temporary if: if <COND> then <CODE> yes
 """
 
-with open("test.txt") as f:
+with open("hworld.txt") as f:
   code=f.read()
-
+#load file above
 #V=pproc.get_vars(another_lexer.tokenise(code))
 V=[]
 #VL=[]

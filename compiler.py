@@ -7,7 +7,7 @@ def handle(C,V):
   T=pproc.post_tokenisation(T)
   T=debracer.parse(T,V)
   return T[1]
-with open("supercomp.txt") as f:
+with open("hworld.txt") as f:
   code=f.read()
 V=[]
 #VL=[]
@@ -117,6 +117,9 @@ squished=""
 si=0
 i=0
 while i<len(compiled):
+  if(len(compiled[i])==0):
+    i+=1
+    continue
   if(compiled[i][0]=="@"):
     labels[compiled[i][1:]]=si
     i+=1
@@ -127,3 +130,4 @@ while i<len(compiled):
 for label in labels:
   squished=squished.replace("%"+label+"%",str(labels[label]))
 
+#print(squished)

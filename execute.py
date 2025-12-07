@@ -1,5 +1,5 @@
 code='"5348434e2063616c63756c61746f72 >s\n"7072696e74 invoke\n22 jsr\n36 jmp\n0 1 =\nrtn\n1 <s =\n4 jsr\n2 1 =\n3 2 =\n1 ? 3 ? % 0 != isf\n15 jmp\n1 1 ? 3 ? // =\n0 0 ? 1 + =\n10 jmp\n2 2 ? 0 ? * =\n4 jsr\n3 3 ? 1 + =\n1 ? 1 > isf\n10 jmp\n2 ? >s\nrtn\n4 1 =\n5 1 -u =\n4 4 ? 1 + =\n4 ? >s\n6 jsr\n6 <s =\n6 ? 5 ? <= isf\n24 jmp\n"4e657720486967686c7920436f6d706f73697465204e756d62657220466f756e642120497420697320 4 ? + "207769746820 + 6 ? + "20666163746f72732e + >s\n"7072696e74 invoke\n5 6 ? =\n4 ? 10000 >= isf\nrtn\n24 jmp\n\n'
-#Copy output from compiler!
+#Copy output from compiler to string above!
 code=code.split("\n")
 pointer=0#Instruction Pointer
 memory=[None]*10#Allot passing will be done in the future :)
