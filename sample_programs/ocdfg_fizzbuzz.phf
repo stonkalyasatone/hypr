@@ -1,0 +1,29 @@
+#ocdfg
+#The comment above is required to distinguish legacy Hypr files that use the old control flow system, with ones that use the new experimental control flow system
+#By the way, this new variant doesn't depend on indentation nor braces.
+var i
+i=0
+while i<100
+  i++
+  if i%15==0
+    if i%30==0
+       push "Double FizzBuzz"
+    else
+       push "FizzBuzz"
+    endc
+    invoke print
+    continue
+  endc
+  if i%5==0
+    push "Buzz"
+    invoke print
+    continue
+  endc
+  if i%3==0
+    push "Fizz"
+    invoke print
+    continue
+  endc
+  push i
+  invoke print
+endl

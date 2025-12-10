@@ -1,0 +1,34 @@
+0 0 =
+0 ? 100 < isf
+4 jmp
+34 jmp
+0 0 ? 1 + =
+0 ? 15 % 0 == isf
+8 jmp
+16 jmp
+0 ? 30 % 0 == isf
+11 jmp
+13 jmp
+"446f75626c652046697a7a42757a7a >s
+14 jmp
+"46697a7a42757a7a >s
+"7072696e74 invoke
+1 jmp
+@end0
+0 ? 5 % 0 == isf
+20 jmp
+23 jmp
+"42757a7a >s
+"7072696e74 invoke
+1 jmp
+@end2
+0 ? 3 % 0 == isf
+27 jmp
+30 jmp
+"46697a7a >s
+"7072696e74 invoke
+1 jmp
+@end3
+0 ? >s
+"7072696e74 invoke
+1 jmp

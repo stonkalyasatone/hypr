@@ -1,6 +1,7 @@
 import another_lexer
 import debracer
 import pproc
+import coda_onset
 public=True#False is for developers only
 def handle(C,V):
   T=another_lexer.tokenise(C)
@@ -19,12 +20,24 @@ while public:
   except KeyboardInterrupt:
     exit()
 if not public:
-  with open("sample_programs\\sqrt.phf") as f:
-      code=f.read()
+  code='push "Warning: Compiling from Empty file";invoke print'
+  pass #idk
 V=[]
 #VL=[]
 slots=dict()#alloted slots
 slot_max=0
+
+
+#Optional features
+if(code[0]=="#"):
+  FLAGS=code.split("\n")[0][1:].split(",")
+else:
+  FLAGS=[]
+  
+if "ocdfg" in FLAGS:
+  code=coda_onset.coda_onset(code)
+
+  
 code=code.replace(";","\n").split("\n")
 labels=dict()
 for i in range(len(code)):
