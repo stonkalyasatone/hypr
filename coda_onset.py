@@ -22,7 +22,7 @@ while i<=100
   invoke print
 endl
 """
-def coda_onset(c):
+def coda_onset(c: str):
   """
     Using the Onset-Coda Dynamic Flow Generator, or OCD Flow Generator algorithm
     to handle advanced constructs, like ifs and thens.

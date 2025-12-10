@@ -1,3 +1,4 @@
+#legacy10
 var x;var g;var d;var a;var p
 push "Input a number";invoke input;invoke int
 pop x

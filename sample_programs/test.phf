@@ -1,3 +1,4 @@
+#legacy10
 push "Collatz's Sequence, now with Functions";invoke print
 var start
 var maxlen

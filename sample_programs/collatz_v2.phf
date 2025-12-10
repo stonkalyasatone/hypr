@@ -1,0 +1,39 @@
+jsr @main
+jmp @halt
+
+@collatz
+var acc
+var length
+pop acc #retrieve the argument
+length=0
+while acc>1
+	length++
+	if acc%2==0
+		acc/=2
+	else
+		acc=3*acc+1
+	endc #End Condition
+endl #End Loop
+push length #Results *also* first in last out
+rtn
+
+@main
+var start
+var currlen #WARNING: There is no such thing as scope. Name your variables carefully.
+var maxlen
+start=0
+maxlen=-1
+while start<10000
+	start++#indentation is optional and 
+	push start# Arguments first in last out, then JSR to function
+	jsr @collatz
+	pop currlen
+	if currlen>maxlen
+		maxlen=currlen
+		push "New Longest Collatz Sequence Found! Starting at "+start+", "+currlen+" element(s) long."
+		invoke print
+	endc
+endl
+rtn
+
+@halt

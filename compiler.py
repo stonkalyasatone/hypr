@@ -37,7 +37,7 @@ if(code[0]=="#"):
 else:
   FLAGS=[]
   
-if "ocdfg" in FLAGS:
+if "legacy10" not in FLAGS:
   code=coda_onset.coda_onset(code)
 
   

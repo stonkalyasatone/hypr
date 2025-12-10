@@ -1,3 +1,4 @@
+#legacy10
 push "SHCN calculator";invoke print
 var cand
 var fc
