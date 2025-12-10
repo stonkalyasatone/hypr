@@ -2,7 +2,12 @@ import another_lexer
 import debracer
 import pproc
 import coda_onset
+from time import time
 public=True#False is for developers only
+STYLE_ERROR="\033[31m"
+STYLE_INPUT="\033[33m\033[1m"
+STYLE_SUCCESS="\033[32m"
+CLEAR="\033[0m"
 def handle(C,V):
   T=another_lexer.tokenise(C)
   T=pproc.post_tokenisation(T)
@@ -10,18 +15,16 @@ def handle(C,V):
   return T[1]
 while public:
   try:
-    with open(input("Input File:")) as f:
+    with open(input(STYLE_INPUT+"Input File:"+CLEAR)) as f:
       code=f.read()
     break
   except OSError as e:
-    print("Failed to open file, please try again")
-    print("Reason:")
-    print(e)
-  except KeyboardInterrupt:
-    exit()
+    print(STYLE_ERROR,"Failed to open file, please try again",CLEAR)
+    print(STYLE_ERROR,"Reason:",e,CLEAR)
 if not public:
   code='push "Warning: Compiling from Empty file";invoke print'
   pass #idk
+COMPILE_TIMER=time()
 V=[]
 #VL=[]
 slots=dict()#alloted slots
@@ -149,26 +152,29 @@ while i<len(compiled):
     continue
   if(compiled[i][0]=="@"):
     labels[compiled[i][1:]]=si
-    i+=1
-  squished+=compiled[i]
-  squished+="\n"
+    #i+=1
+  else:
+    si+=1
+    squished+=compiled[i]
+    squished+="\n"
   i+=1
-  si+=1
+  
 for label in labels:
   squished=squished.replace("%"+label+"%",str(labels[label]))
 squished=[i.strip() for i in squished.split("\n") if i.strip()!=""]
 squished="\n".join(squished)
 #print(squished)
 #c=input("Newline character? (must be one that doesn't exist in your program):")
-print("Min Allot Size:",slot_max)
+COMPILE_TIMER=(time()-COMPILE_TIMER)*1000
+print(STYLE_SUCCESS,"Compilation successful in",f"{COMPILE_TIMER:.3f}","ms",CLEAR)
+print(STYLE_SUCCESS,"Min Allot Size:",slot_max,CLEAR)
 while public:
   try:
-    with open(input("Output file?"),"w") as f:
+    with open(input(STYLE_INPUT+"Output file:"+CLEAR),"w") as f:
       f.write(squished)
     break
   except OSError as e:
-    print("Failed to open file, please try again")
-    print("Reason:")
-    print(e)
+    print(STYLE_ERROR,"Failed to open file, please try again",CLEAR)
+    print(STYLE_ERROR,"Reason:",e,CLEAR)
   except KeyboardInterrupt:
     exit()

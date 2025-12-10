@@ -1,25 +1,28 @@
 #c=input("Newline character? (should be known while compiling)")
+STYLE_ERROR="\033[31m"
+STYLE_INPUT="\033[33m\033[1m"
+STYLE_SUCCESS="\033[32m"
+CLEAR="\033[0m"
+from time import time
 while True:
   try:
-    a=int(input("Allot size? "))
-    break
-  except KeyboardInterrupt:
-    exit()
+    a=int(input(STYLE_INPUT+"Allot size? "+CLEAR))
+    if a<0:
+      print(STYLE_ERROR,"Cannot allocate a negative number of variables.",CLEAR)
+    else:
+      break
   except:
-    print("error, please try again")
+    print(STYLE_ERROR,"What you entered wasn't a number.",CLEAR)
     
 while True:
   try:
-    with open(input("Compiler output file?")) as f:
+    with open(input(STYLE_INPUT+"Compiler output file? "+CLEAR)) as f:
       code=f.read()
     break
   except OSError as e:
-    print("Failed to open file, please try again")
-    print("Reason:")
-    print(e)
-  except KeyboardInterrupt:
-    exit()
-#Copy output from compiler to string above!
+    print(STYLE_ERROR,"Failed to open file, please try again",CLEAR)
+    print(STYLE_ERROR,"Reason:",e,CLEAR)
+
 code=code.split("\n")
 pointer=0#Instruction Pointer
 memory=[None]*a#Allot passing will be done in the future :)
@@ -33,13 +36,14 @@ keys={'0':0,'1':1,'2':2,'3':3,
       '8':8,'9':9,'a':10,'b':11,
       'c':12,'d':13,'e':14,'f':15}
 import math
+EXEC_TIMER=time()
 def strlit(s):
   S=""
   for i in range(0,len(s)-1,2):
     c=keys[s[i]]*16+keys[s[i+1]]
     S+=chr(c)
   return S
-encountered=set()
+#encountered=set()
 def run(token):
   #encountered.add(token)
   #return
@@ -159,5 +163,9 @@ while pointer<len(code):
     handle(token)
     #print("T:",token,"S:",estack)
   pointer+=1
-print("Program execution completed")
-input()#pause a little bit
+EXEC_TIMER=(time()-EXEC_TIMER)*1000
+print(STYLE_SUCCESS,"Execution successful in",f"{EXEC_TIMER:.3f}","ms",CLEAR)
+try:
+  input("Press any key to continue... (or press Ctrl+C)")#pause a little bit
+except:
+  exit()

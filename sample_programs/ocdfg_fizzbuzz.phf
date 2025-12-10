@@ -1,6 +1,6 @@
 #ocdfg
 #The comment above is required to distinguish legacy Hypr files that use the old control flow system, with ones that use the new experimental control flow system
-#By the way, this new variant doesn't depend on indentation nor braces.
+#By the way, this new variant doesn't depend on indentation nor braces, instead relying on statements like "endc" and "endl".
 var i
 i=0
 while i<100
