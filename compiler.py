@@ -108,9 +108,9 @@ def cpl(line):
     return
   elif temp[0]=="push":
     argp=handle(arg,V).comp()
-    addline(argp+" >s")
+    addline(argp+"")
   elif temp[0]=="pop":
-    addline(establish(arg)+" <s =")
+    addline(establish(arg)+" swap =")
   elif temp[0]=="jmp":
     argp="%"+arg[1:]+"%"
     addline(argp+" jmp")

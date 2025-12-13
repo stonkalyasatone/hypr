@@ -27,10 +27,8 @@ code=code.split("\n")
 pointer=0#Instruction Pointer
 memory=[None]*a#Allot passing will be done in the future :)
 rstack=[]#Return stack, for jsr and rtn
-vstack=[]#Value stack, intended to store arguments,
-#though technically you can store literally anything
-estack=[]#Expression stack, for operators
-#Definetly consider merging this into vstack, leaving us with a 2-stack system
+vstack=[]#Value stack, now merged with the return stacks
+#Next up: Unify the rest of the stacks into one unified stack
 keys={'0':0,'1':1,'2':2,'3':3,
       '4':4,'5':5,'6':6,'7':7,
       '8':8,'9':9,'a':10,'b':11,
@@ -47,83 +45,83 @@ def strlit(s):
 def run(token):
   #encountered.add(token)
   #return
-  global pointer,memory,rstack,vstack,estack
+  global pointer,memory,rstack,vstack,vstack
   if token=="-u":
-    estack.append(-estack.pop())
+    vstack.append(-vstack.pop())
   if token=="jmp":
-    pointer=estack.pop()-1
+    pointer=vstack.pop()-1
   if token=="jsr":
     rstack.append(pointer)
-    pointer=estack.pop()-1
+    pointer=vstack.pop()-1
   if token=="rtn":
     pointer=rstack.pop()
   if token=="<=":
-    arg1=estack.pop()
-    arg0=estack.pop()
-    estack.append(arg0<=arg1)
+    arg1=vstack.pop()
+    arg0=vstack.pop()
+    vstack.append(arg0<=arg1)
   if token==">=":
-    arg1=estack.pop()
-    arg0=estack.pop()
-    estack.append(arg0>=arg1)
+    arg1=vstack.pop()
+    arg0=vstack.pop()
+    vstack.append(arg0>=arg1)
   if token=="<":
-    arg1=estack.pop()
-    arg0=estack.pop()
-    estack.append(arg0<arg1)
+    arg1=vstack.pop()
+    arg0=vstack.pop()
+    vstack.append(arg0<arg1)
   if token==">":
-    arg1=estack.pop()
-    arg0=estack.pop()
-    estack.append(arg0>arg1)
+    arg1=vstack.pop()
+    arg0=vstack.pop()
+    vstack.append(arg0>arg1)
   if token=="==":
-    arg1=estack.pop()
-    arg0=estack.pop()
-    estack.append(arg0==arg1)
+    arg1=vstack.pop()
+    arg0=vstack.pop()
+    vstack.append(arg0==arg1)
   if token=="!=":
-    arg1=estack.pop()
-    arg0=estack.pop()
-    estack.append(arg0!=arg1)
+    arg1=vstack.pop()
+    arg0=vstack.pop()
+    vstack.append(arg0!=arg1)
   if token=="+":
-    arg1=estack.pop()
-    arg0=estack.pop()
+    arg1=vstack.pop()
+    arg0=vstack.pop()
     try:
-      estack.append(arg0+arg1)
+      vstack.append(arg0+arg1)
     except:
-      estack.append(str(arg0)+str(arg1))
+      vstack.append(str(arg0)+str(arg1))
   if token=="-":
-    arg1=estack.pop()
-    arg0=estack.pop()
-    estack.append(arg0-arg1)
+    arg1=vstack.pop()
+    arg0=vstack.pop()
+    vstack.append(arg0-arg1)
   if token=="*":
-    arg1=estack.pop()
-    arg0=estack.pop()
-    estack.append(arg0*arg1)
+    arg1=vstack.pop()
+    arg0=vstack.pop()
+    vstack.append(arg0*arg1)
   if token=="/":
-    arg1=estack.pop()
-    arg0=estack.pop()
-    estack.append(arg0/arg1)
+    arg1=vstack.pop()
+    arg0=vstack.pop()
+    vstack.append(arg0/arg1)
   if token=="//":
-    arg1=estack.pop()
-    arg0=estack.pop()
-    estack.append(arg0//arg1)
+    arg1=vstack.pop()
+    arg0=vstack.pop()
+    vstack.append(arg0//arg1)
   if token=="%":
-    arg1=estack.pop()
-    arg0=estack.pop()
-    estack.append(arg0%arg1)
-  if token==">s":
-    vstack.append(estack.pop())
-    #print("Pushed",vstack[-1])
-  if token=="<s":
-    estack.append(vstack.pop())
+    arg1=vstack.pop()
+    arg0=vstack.pop()
+    vstack.append(arg0%arg1)
+  if token=="swap":
+    arg0=vstack.pop()
+    arg1=vstack.pop()
+    vstack.append(arg0)
+    vstack.append(arg1)
   if token=="?":
-    estack.append(memory[estack.pop()])
+    vstack.append(memory[vstack.pop()])
   if token=="=":
-    arg1=estack.pop()
-    arg0=estack.pop()
+    arg1=vstack.pop()
+    arg0=vstack.pop()
     memory[arg0]=arg1
   if token=="isf":
-    if(not estack.pop()):
+    if(not vstack.pop()):
       pointer+=1
   if token=="invoke":
-    op=estack.pop()
+    op=vstack.pop()
     if op=="print":
       print(vstack.pop())
     if op=="input":
@@ -139,18 +137,18 @@ def run(token):
     if op=="log":
       vstack.append(math.log(vstack.pop(),10))
 def handle(token):
-  global estack
+  global vstack
   if len(token)==0:
       return
   if token[0]=='"':
     #String literal
-    estack.append(strlit(token[1:]))
+    vstack.append(strlit(token[1:]))
   elif token[0]=='f':
     #Floating-point literal
-    estack.append(float(token[1:]))
+    vstack.append(float(token[1:]))
   elif token[0] in "0123456789":
     #Integer literal
-    estack.append(int(token))
+    vstack.append(int(token))
   else:
     #Command token
     run(token)
@@ -161,7 +159,7 @@ while pointer<len(code):
   #print("Line:",line)
   for token in line:
     handle(token)
-    #print("T:",token,"S:",estack)
+    #print("T:",token,"S:",vstack)
   pointer+=1
 EXEC_TIMER=(time()-EXEC_TIMER)*1000
 print(STYLE_SUCCESS,"Execution successful in",f"{EXEC_TIMER:.3f}","ms",CLEAR)
